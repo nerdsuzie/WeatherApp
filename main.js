@@ -14,7 +14,15 @@ getLonLat = (zipCode)=>{//function to get the zip code
     var zipObject = JSON.parse (response.body) 
     var lat = zipObject.lat
     var lon = zipObject.lng
-    getWeather (lat,lon)    })
+
+    if(response.body.error_code === 404){
+        console.log ('That is an invalid zip code. Please try again')
+        rl.prompt()
+     }else {
+        getWeather (lat,lon)  
+ }
+   
+  })
 }
 //Get Weather
 //https://api.darksky.net/forecast/0123456789abcdef9876543210fedcba/42.3601,-71.0589
@@ -29,10 +37,11 @@ getWeather = (lat, lon) => {
             var weathType = weathObject.currently.precipType
         }  
         console.log (`Your current outlook is ${weathType}`)
+        console.log (`Your current temp is ${weathObject.currently.temperature} F`)
+        console.log (`Here is what is in store: ${weathObject.hourly.summary}`)
         rl.prompt ()
     } catch (error) {
         console.log (`Your zipcode was not found. Please try again.`)
-
         rl.prompt ()
     }
     
